@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: "Inter Tight", sans-serif;
+}
 .alert-notice {
   @apply bg-green-200 border-green-800 text-green-800;
 }
