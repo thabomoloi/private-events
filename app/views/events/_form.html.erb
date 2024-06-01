@@ -1,0 +1,33 @@
+<div class="flex items-center justify-center">
+  <div class="bg-white p-4 sm:p-8 rounded-lg shadow-lg w-full max-w-md">
+    <h1 class="text-3xl font-bold mb-6 text-slate-800"><%= form_heading %></h1>
+    
+    <%= form_with model: event, class: "space-y-6" do |form| %>
+        <div class="flex flex-col">
+            <%= form.label :name, class: "mb-2 font-semibold" %>
+            <%= form.text_field :name, class: "border rounded bg-slate-100 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full mb-1" %>
+            <%= render "field_error", event: event, field: :name %>
+        </div>
+        <div class="flex flex-col">
+            <%= form.label :description, class: "mb-2 font-semibold" %>
+            <%= form.text_area :description, class: "border rounded bg-slate-100 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full mb-1" %>
+            <%= render "field_error", event: event, field: :description%>
+
+        </div>
+        <div class="flex flex-col">
+            <%= form.label :location, class: "mb-2 font-semibold" %>
+            <%= form.text_field :location, class: "border rounded bg-slate-100 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full mb-1" %>
+            <%= render "field_error", event: event, field: :location %>
+
+        </div>
+        <div class="flex flex-col">
+            <%= form.label :date, class: "mb-2 font-semibold" %>
+            <%= form.datetime_field :date, class: "border rounded bg-slate-100 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full mb-1" %>
+            <%= render "field_error", event: event, field: :date %>
+        </div>
+        <div>
+            <%= form.submit "Submit", class: "bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" %>
+        </div>
+    <% end %>
+  </div>
+</div>
