@@ -10,5 +10,10 @@ Rails.application.routes.draw do
   root "events#index"
 
   resources :users
-  resources :events
+  resources :events do
+    member do
+      post "attend", to: "event_attendances#create"
+      delete "unattend", to: "event_attendances#destroy"
+    end
+  end
 end
