@@ -10,9 +10,12 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+  <body class="p-4 sm:p-8 bg-slate-100">
+    <% flash.each do |key, message| %>
+      <div class="alert alert-<%= key %> border-2 py-2 px-4 rounded-md mb-4 font-semibold">
+        <%= message %>
+      </div>
+    <% end %>
     <%= yield %>
   </body>
 </html>
