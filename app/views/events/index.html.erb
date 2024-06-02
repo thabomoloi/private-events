@@ -1,14 +1,26 @@
 <div class="mb-2 flex justify-between items-center">
-    <h1 class="text-3xl font-bold text-slate-800">Events</h1>
+    <h1 class="text-2xl font-bold text-slate-800">Upcoming Events</h1>
     <%= link_to "New Event", new_event_path, class: "bg-blue-800 text-sm  hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded-full " %>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-3 my-4">
-    <% @events.each do | event | %>
+    <% @upcoming_events.each do | event | %>
         <%= render event %>
     <% end %>  
 </div>
 
-<% if @events.size.zero? %>
-    <p class="text-lg text-slate-700 text-center my-8">It looks like there are no events yet.</p>
+<% if @upcoming_events.size.zero? %>
+    <p class="text-lg text-slate-700 text-center mt-8">It looks like there are no events yet.</p>
 <% end %>
+
+<% unless @past_events.size.zero? %>
+    <div class="mb-2 mt-8 flex justify-between items-center ">
+        <h1 class="text-2xl font-bold text-slate-800">Past Events</h1>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-3 my-4">
+        <% @past_events.each do | event | %>
+            <%= render event %>
+        <% end %>  
+    </div>
+<% end%>

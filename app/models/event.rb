@@ -5,6 +5,9 @@ class Event < ApplicationRecord
   has_many :invitations, dependent: :destroy
   has_many :invited_users, through: :invitations, source: :user
 
+  scope :past, -> { where("date < ?", Time.current) }
+  scope :upcoming, -> { where("date >= ?", Time.current) }
+
   validates :name, presence: true, length: { maximum: 100 }
   validates :location, presence: true, length: { maximum: 100 }
   validates :description, length: { minimum: 10, maximum: 500 }
