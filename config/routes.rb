@@ -15,5 +15,6 @@ Rails.application.routes.draw do
       post "attend", to: "event_attendances#create"
       delete "unattend", to: "event_attendances#destroy"
     end
+    resources :invitations, only: :create
   end
 end

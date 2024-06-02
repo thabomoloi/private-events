@@ -1,5 +1,5 @@
 <div id="<%= dom_id event %>" class="p-6 shadow-md rounded-md bg-white flex flex-col">
-  <h2 class="line-clamp-2	text-xl font-bold mb-2 text-slate-700">
+  <h2 class="line-clamp-1	text-xl font-bold mb-2 text-slate-700">
     <%= link_to event_path(event) do %>
       <%= event.name %>
     <% end %>
@@ -11,6 +11,6 @@
     <%= event.location %>
   </p>
   <p class="line-clamp-1 text-sm text-slate-500 font-semibold mt-auto">
-    <%= event.creator.email %>
+    <%= event.creator.name %>
   </p>
 </div>
