@@ -5,6 +5,7 @@
     <div class="flex gap-8 font-medium items-center">
         <%= link_to 'Events', events_url %>
         <% if user_signed_in? %>
+            <%= link_to 'Attended Events',  attended_events_path %>
             <%= link_to 'Sign out', destroy_user_session_path, data: { turbo_method: :delete } %>
         <% else %>
             <%= link_to 'Sign in', new_user_session_path %>
