@@ -1,41 +1,98 @@
-<%= link_to events_path, class: "text-slate-800 hover:text-slate-700 flex gap-1 hover:underline font-semibold hover:font-normal" do %>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor" class="w-5">
-        <title>arrow-left</title>
-        <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
-    </svg>
-    Back to Events
-<% end %>
+<div>
+  <%= link_to events_path, class: "text-slate-800 hover:text-slate-700 flex gap-1 hover:underline font-semibold hover:font-normal" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor" class="w-5">
+          <title>arrow-left</title>
+          <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+      </svg>
+      Back to Events
+  <% end %>
 
-<div class="py-4">
-  <h1 class="text-4xl font-bold mb-2 text-slate-900"><%= @event.name %></h1>
+  <div class="py-4">
+    <h1 class="text-4xl font-bold mb-2 text-slate-900"><%= @event.name %></h1>
 
-  <p class="text-slate-700 font-semibold mb-1" >
-    Organized by <%= @event.creator.email %>
-  </p>
-  <p class="text-slate-700 font-semibold mb-1 flex gap-1 items-center">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5"><title>calendar-today</title><path d="M7,10H12V15H7M19,19H5V8H19M19,3H18V1H16V3H8V1H6V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3Z" /></svg>
-    <%= @event.date.strftime("%A, %d %B %Y, %I:%M %p") %>
-  </p>
-  <p class="text-slate-700 font-semibold  mb-4 flex gap-1 items-center">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5"><title>map-marker</title><path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z" /></svg>
-    <%= @event.location %>
-  </p>
+    <p class="text-slate-700 font-semibold mb-1" >
+      Organized by <%= @event.creator.name %>
+    </p>
+    <p class="text-slate-700 font-semibold mb-1 flex gap-1 items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5"><title>calendar-today</title><path d="M7,10H12V15H7M19,19H5V8H19M19,3H18V1H16V3H8V1H6V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3Z" /></svg>
+      <%= @event.date.strftime("%A, %d %B %Y, %I:%M %p") %>
+    </p>
+    <p class="text-slate-700 font-semibold  mb-4 flex gap-1 items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5"><title>map-marker</title><path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z" /></svg>
+      <%= @event.location %>
+    </p>
 
-  <h2 class="text-xl font-bold mb-2 text-slate-700">About</h2>
-  <p class="text-slate-800">
+    <h2 class="text-xl font-bold mb-2 text-slate-700">About</h2>
+    <p class="text-slate-800">
 
-    <%= @event.description %>
-  </p>
+      <%= @event.description %>
+    </p>
 
-</div>
+  </div>
 
-
-<% if user_signed_in? %>
-    <% if current_user.id == @event.creator.id %>
-        <div class="py-4 flex gap-4">
-        <%= link_to "Edit", edit_event_path(@event), class: "bg-blue-800 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded" %>
-        <%= button_to "Delete", event_path(@event), method: :delete, data: { turbo_confirm: "Are you sure you want to delete this event?" }, class: "bg-slate-200 hover:bg-slate-300 text-blue-800 font-semibold py-2 px-4 rounded" %>
-        <div>
+  <% if user_signed_in? && current_user.id != @event.creator.id %>
+    <% if @event.invited_users.include?(current_user) %>
+      <% if @event.attendees.include?(current_user) %>
+        <div class="text-slate-800 flex items-center gap-4">
+          <span>You have attended this event</span>
+          <%= button_to "Unattend", unattend_event_path(@event), method: :delete, class: "bg-blue-800 hover:bg-blue-800 text-white text-sm font-semibold py-2 px-4 rounded-3xl" %>
+        </div>
+      <% else %>
+        <div class="text-slate-800 flex items-center gap-4">
+          <span>You have been invited to this event</span>
+          <%= button_to "Attend", attend_event_path(@event), method: :post, class: "bg-blue-800 hover:bg-blue-800 text-white text-sm font-semibold py-2 px-4 rounded-3xl" %>
+        </div>
+      <% end %>
     <% end %>
-<% end%>
+  <% end %>
 
+  <% if user_signed_in? &&  current_user.id == @event.creator.id %>
+    <h3 class="text-xl font-bold mb-4 text-slate-700">Invite Users</h3>
+    <%= form_with url: event_invitations_path(@event), local: true, class: "space-y-4" do |form| %>
+      <div class="flex gap-4 items-center  w-full">
+        <%= form.label :user_id, 'User to invite', class: "text-sm font-medium text-slate-700" %>
+        <%= form.collection_select :user_id, User.where.not(id: current_user.id), :id, :email, { prompt: 'Select a user' }, required: true, class: "form-select p-2 text-sm mt-1 flex-grow border-slate-300 rounded-md shadow focus:ring-blue-500 focus:border-blue-500" %>
+        <%= form.submit 'Invite', class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-3xl shadow-sm text-blue-800 bg-slate-200" %>
+      </div>
+    <% end %>
+    <div class="flex justify-between mt-8 items-center mb-4">
+      <h3 class="text-xl font-bold text-slate-700">Attendees</h3>
+      <% if @event.attendees.include?(current_user) %>
+        <%= button_to "Unattend", unattend_event_path(@event), method: :delete, class: "bg-blue-800 hover:bg-blue-800 text-white text-sm font-semibold py-2 px-4 rounded-3xl" %>
+      <% else %>
+        <%= button_to "Attend", attend_event_path(@event), method: :post, class: "bg-blue-800 hover:bg-blue-800 text-white text-sm font-semibold py-2 px-4 rounded-3xl" %>
+      <% end %>
+    </div>
+    <div class="relative overflow-x-auto">
+        <table class="w-full text-sm text-left rtl:text-right text-slate-500">
+            <thead class="text-xs text-slate-700 uppercase bg-slate-200">
+                <tr>
+                    <th scope="col" class="px-4 py-2">
+                        Name 
+                    </th>
+                    <th scope="col" class="px-4 py-2">
+                        Email 
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <% @event.attendees.each do |attendee| %>
+                  <tr class="bg-white border-b">
+                      <th scope="row" class="px-6 py-4 font-medium text-slate-900 whitespace-nowrap">
+                          <%= attendee.name %>
+                      </th>
+                      <td class="px-6 py-4">
+                          <%= attendee.email %>
+                      </td>
+                  </tr>
+                <% end %>
+          
+            </tbody>
+        </table>
+    </div>
+      <div class="py-4 flex gap-4 mt-8">
+        <%= link_to "Edit Event", edit_event_path(@event), class: "bg-blue-800 hover:bg-blue-800 text-white font-semibold text-sm py-2 px-4 rounded" %>
+        <%= button_to "Delete Event", event_path(@event), method: :delete, data: { turbo_confirm: "Are you sure you want to delete this event?" }, class: "bg-slate-200 text-sm hover:bg-slate-300 text-blue-800 font-semibold py-2 px-4 rounded" %>
+      </div>
+  <% end%>
+</div>
